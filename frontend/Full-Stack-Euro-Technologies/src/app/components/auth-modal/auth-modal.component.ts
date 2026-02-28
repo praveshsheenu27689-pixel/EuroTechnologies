@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { AuthService } from '../../services/auth.service';
+import { ErrorHandlerService } from '../../services/error-handler.service';
 
 @Component({
   selector: 'app-auth-modal',
@@ -9,9 +11,13 @@ export class AuthModalComponent implements OnInit {
   showModal = false;
   isLogin = true;
 
+  constructor(
+    private authService: AuthService,
+    private errorHandler: ErrorHandlerService
+  ) {}
+
   ngOnInit() {
-    const hasVisited = sessionStorage.getItem('hasVisited');
-    if (!hasVisited) {
+    if (!this.authService.isLoggedIn()) {
       setTimeout(() => {
         this.showModal = true;
       }, 2000);
@@ -24,33 +30,51 @@ export class AuthModalComponent implements OnInit {
 
   closeModal() {
     this.showModal = false;
-    sessionStorage.setItem('hasVisited', 'true');
   }
 
   skipModal() {
     this.showModal = false;
-    sessionStorage.setItem('hasVisited', 'true');
   }
 
   onLogin(form: any) {
     if (form.valid) {
-      console.log('Login:', form.value);
-      this.closeModal();
-      const event = new CustomEvent('showToast', { 
-        detail: { message: 'Login successful! Welcome back.', type: 'success' } 
+      const credentials = {
+        username: form.value.username,
+        password: form.value.password
+      };
+      
+      this.authService.login(credentials).subscribe({
+        next: (response) => {
+          this.closeModal();
+          this.errorHandler.showSuccess(response.message || 'Login successful! Welcome back.');
+        },
+        error: (error) => {
+          this.errorHandler.showError(error.error?.message || 'Login failed. Please check your credentials.');
+        }
       });
-      window.dispatchEvent(event);
     }
   }
 
   onRegister(form: any) {
     if (form.valid) {
-      console.log('Register:', form.value);
-      this.closeModal();
-      const event = new CustomEvent('showToast', { 
-        detail: { message: 'Registration successful! Welcome to DevBootcamp.', type: 'success' } 
+      const data = {
+        username: form.value.username,
+        firstName: form.value.firstName,
+        lastName: form.value.lastName,
+        email: form.value.email,
+        phone: form.value.phone,
+        password: form.value.password
+      };
+      
+      this.authService.register(data).subscribe({
+        next: (response) => {
+          this.closeModal();
+          this.errorHandler.showSuccess(response.message || 'Registration successful! Welcome to DevBootcamp.');
+        },
+        error: (error) => {
+          this.errorHandler.showError(error.error?.message || 'Registration failed. Please try again.');
+        }
       });
-      window.dispatchEvent(event);
     }
   }
 }

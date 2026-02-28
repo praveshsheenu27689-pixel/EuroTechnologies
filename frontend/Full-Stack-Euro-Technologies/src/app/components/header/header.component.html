@@ -14,7 +14,15 @@
         <li><a routerLink="/testimonials" routerLinkActive="active" (click)="closeMenu()">Testimonials</a></li>
         <li><a routerLink="/contact" routerLinkActive="active" (click)="closeMenu()">Contact</a></li>
       </ul>
-      <button class="cta-btn" routerLink="/contact">Enroll Now</button>
+      <div class="header-actions">
+        <span *ngIf="authService.isLoggedIn()" class="user-name">
+          <i class="fas fa-user-circle"></i> {{ (authService.currentUser$ | async)?.username }}
+        </span>
+        <button *ngIf="!authService.isLoggedIn()" class="cta-btn" routerLink="/contact">Enroll Now</button>
+        <button *ngIf="authService.isLoggedIn()" class="cta-btn logout-btn" (click)="logout()">
+          <i class="fas fa-sign-out-alt"></i> Logout
+        </button>
+      </div>
       <div class="hamburger" (click)="toggleMenu()" [class.active]="isMenuOpen">
         <span></span>
         <span></span>

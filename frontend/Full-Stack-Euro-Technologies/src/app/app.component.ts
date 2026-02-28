@@ -14,7 +14,7 @@ export class AppComponent {
   isLoading = false;
   isDarkMode = false;
   errorMessage: ErrorMessage | null = null;
-
+  
   constructor(
     private router: Router,
     public loadingService: LoadingService,

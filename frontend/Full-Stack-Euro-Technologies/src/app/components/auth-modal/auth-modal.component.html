@@ -15,8 +15,8 @@
       <h3>Login to Your Account</h3>
       
       <div class="form-group">
-        <i class="fas fa-envelope"></i>
-        <input type="email" name="email" placeholder="Email Address" ngModel required email>
+        <i class="fas fa-user"></i>
+        <input type="text" name="username" placeholder="Username" ngModel required>
       </div>
       
       <div class="form-group">
@@ -59,7 +59,17 @@
       
       <div class="form-group">
         <i class="fas fa-user"></i>
-        <input type="text" name="name" placeholder="Full Name" ngModel required>
+        <input type="text" name="username" placeholder="Username" ngModel required>
+      </div>
+      
+      <div class="form-group">
+        <i class="fas fa-user"></i>
+        <input type="text" name="firstName" placeholder="First Name" ngModel required>
+      </div>
+      
+      <div class="form-group">
+        <i class="fas fa-user"></i>
+        <input type="text" name="lastName" placeholder="Last Name" ngModel required>
       </div>
       
       <div class="form-group">
@@ -74,7 +84,7 @@
       
       <div class="form-group">
         <i class="fas fa-lock"></i>
-        <input type="password" name="password" placeholder="Password" ngModel required minlength="6">
+        <input type="password" name="password" placeholder="Password (min 8 chars)" ngModel required minlength="8">
       </div>
       
       <div class="form-options">

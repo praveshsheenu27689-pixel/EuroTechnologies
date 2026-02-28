@@ -28,24 +28,36 @@ public class SecurityConfig {
     private final JwtAuthenticationFilter jwtAuthFilter;
     private final UserDetailsService userDetailsService;
     
+    // @Bean
+    // public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    //     http
+    //         .csrf(AbstractHttpConfigurer::disable)
+    //         .authorizeHttpRequests(auth -> auth
+    //             .requestMatchers("/api/v1/auth/**", "/api/v1/contact/**").permitAll()
+    //             .requestMatchers("/api/v1/courses/**").permitAll()
+    //             .requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/swagger-ui.html").permitAll()
+    //             .requestMatchers("/actuator/**").permitAll()
+    //             .requestMatchers("/api/v1/admin/**").hasRole("ADMIN")
+    //             .anyRequest().authenticated()
+    //         )
+    //         .sessionManagement(session -> session
+    //             .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+    //         )
+    //         .authenticationProvider(authenticationProvider())
+    //         .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
+        
+    //     return http.build();
+    // }
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
+            // .csrf().disable()
             .csrf(AbstractHttpConfigurer::disable)
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/api/v1/auth/**", "/api/v1/contact/**").permitAll()
-                .requestMatchers("/api/v1/courses/**").permitAll()
-                .requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/swagger-ui.html").permitAll()
-                .requestMatchers("/actuator/**").permitAll()
-                .requestMatchers("/api/v1/admin/**").hasRole("ADMIN")
-                .anyRequest().authenticated()
-            )
-            .sessionManagement(session -> session
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-            )
-            .authenticationProvider(authenticationProvider())
-            .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
-        
+                .anyRequest().permitAll()
+            );
+
         return http.build();
     }
     
